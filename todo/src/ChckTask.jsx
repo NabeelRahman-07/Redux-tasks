@@ -1,75 +1,48 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 
 function CheckBox() {
-    // const list=[{id:1,value:"DSA"},
-    //     {id:2,value:"JAVA"},
-    //     {id:3,value:"REACT"},
-    //     {id:4,value:"C++"},
-    //     {id:5,value:"GATE"}
-    // ]
-    // const [selected,setSelected]=useState(false);
-    // const [selectedItems,setSelectedItems]=useState([])
 
-
-    // const handleSelect=()=>{
-    //     setSelected(prev=>!prev)
-    // }
-
-    // const handleSelectedItem=(id,checked)=>{
-    //     setSelectedItems(prev=>{
-    //         if(checked){
-    //                 if(prev.some(item=>item.id===id)) return prev
-    //                 const toSelect=list.find(item=>item.id===id)
-    //                 return toSelect?[...prev,toSelect]:prev
-    //         }else{
-    //             return prev.filter(item=>item.id !==id)
-    //         }
-    //     }
-    //     )
-    // }
-
-
-
-
-
-    const list=[
-        {id:1,text:"HTML"},
-        {id:2,text:"CSS"},
-        {id:3,text:"Javascript"},
-        {id:4,text:"React"},
-        {id:5,text:"Redux"}
+    const list = [
+        { id: 1, text: "HTML" },
+        { id: 2, text: "CSS" },
+        { id: 3, text: "JavaScript" },
+        { id: 4, text: "React" },
+        { id: 5, text: "Redux" },
+        { id: 6, text: "Go" }
     ];
-    const [skills,setSkills]=useState([]);
+    const [show, setShow] = useState(false);
 
-    const handleCheck=(id,checked)=>{
-        setSkills(state=>{
-            if(checked){
-                if(state.some(item=>item.id==id))return state;
-                const newSkill=list.find((item)=>item.id==id)
-                return newSkill?[...state,newSkill]:state;
-            }else{
-                return state.filter((skill)=>skill.id!==id)
-            }
+    const [skill, setSkill] = useState([]);
+    const handleCheck = (id, checked) => {
+        setSkill(prev => {
+            if (checked) {
+                if (prev.some(item => item.id == id)) return prev;
+                const newItem = list.find(item => item.id == id);
+                return newItem ? [...prev, newItem] : prev;
+            } else { return prev.filter((item) => item.id !== id) }
         })
     }
 
-  return( 
-    <div>
-        <h2>Select skills</h2>
-    <ul>
-        {list.map((skill)=>(<li key={skill.id}><input type="checkbox"
-          checked={skills.some((li)=>li.id==skill.id)}
-          onChange={(e)=>handleCheck(skill.id,e.target.checked)} />{skill.text}</li>))}
-    </ul>
-    <div>
-        <h2>Skills</h2>
-        <ul>
-            {skills.map(skill=>(<li>{skill.text}</li>))}
-        </ul>
-    </div>
-    </div>
-    
-  )
-}
+    return (
+        <div>
+            <div>
+                <h2>Select skills</h2>
+                <ul>
+                    {list.map((item) => (
+                        <li><label><input type="checkbox" checked={skill.some(skill => skill.id == item.id)} onChange={(e) => handleCheck(item.id, e.target.checked)} />{item.text}</label></li>
+                    ))}
+                </ul>
+            </div>
+            <div>
+                <h2>Selected skills <button onClick={() => setShow(prev => !prev)}>{show ? "Hide" : "Show"}</button></h2>
+                {show &&
+                    <ul>
+                        {skill.map((skill) => <li key={skill.id}>{skill.text}</li>)}
+                    </ul>
+                }
 
+            </div>
+        </div>
+    )
+}
 export default CheckBox
