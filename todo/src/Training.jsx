@@ -1,25 +1,41 @@
-import React, {useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 function Training() {
-    const words = [
-  "apple", "banana", "cherry", "date", "elderberry",
-  "fig", "grape", "honeydew", "kiwi", "lemon",
-  "mango", "nectarine", "orange", "papaya", "quince",
-  "raspberry", "strawberry", "tangerine", "ugli", "watermelon"
-];
-const [limit,setLimit]=useState(0)
-const dataPerPage=3;
-const items=words.slice(limit,limit+dataPerPage)
+  const skills = [
+    { id: 1, text: "HTML" },
+    { id: 2, text: "CSS" },
+    { id: 3, text: "JAvaScript" },
+    { id: 4, text: "React" },
+    { id: 5, text: "Redux" }
+  ]
+  const [items, setItems] = useState([]);
+
+  const handleChange = (id, checked) => {
+    setItems(prev => {
+      if (checked) {
+        if (prev.some(item => item.id == id)) return prev;
+        const newSkill = skills.find(item => item.id == id)
+        return newSkill ? [...prev, newSkill] : prev;
+      } else {
+        return items.filter(item => item.id !== id)
+      }
+    })
+  }
 
   return (
     <div>
-        <div>
-            <h2>Datas:</h2>
-            {items.map((item)=><li>{item}</li>)}
-            <button onClick={()=>setLimit(prev=>prev-dataPerPage)} disabled={limit==0}>Prev</button>
-            <button onClick={()=>setLimit(prev=>prev+dataPerPage)} disabled={limit+dataPerPage>=words.length}>Next</button>
-        </div>
+      <div>
+        <h2>Select Skills:</h2>
+        {skills.map(skill => <li key={skill.id}><label><input type="checkbox" checked={items.some(item => item.id == skill.id)} onChange={e => handleChange(skill.id, e.target.checked)} />{skill.text}</label></li>)}
+      </div>
+      <div>
+        <h2>Your skills:</h2>
+        <ul>
+          {items.map(item => <li key={item.id}>{item.text}</li>)}
+        </ul>
+      </div>
     </div>
   )
 }
+
 export default Training
